@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import { navItems } from '../../_nav';
 import { AuthService } from '../../services/auth.service';
 import { UserData } from '../../interface/user-data.interface';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -12,7 +14,7 @@ export class DefaultLayoutComponent implements OnInit{
   public navItems = navItems;
   public user: UserData;
 
-  constructor(private authService: AuthService){}
+  constructor(private authService: AuthService, private router: Router){}
 
   ngOnInit(){
     this.authService.checkToken(localStorage.getItem('token')).subscribe(data => {
@@ -24,4 +26,10 @@ export class DefaultLayoutComponent implements OnInit{
   toggleMinimize(e) {
     this.sidebarMinimized = e;
   }
+  
+  logout() {
+    this.authService.logoutUser();
+    this.router.navigate(['login']);
+  }
+
 }

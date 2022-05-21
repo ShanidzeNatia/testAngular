@@ -11,7 +11,11 @@ import { UserData } from '../interface/user-data.interface';
 })
 
 export class AuthService {
-    constructor(private http: HttpClient){}
+    private isloggedIn: boolean;
+
+    constructor(private http: HttpClient){
+        this.isloggedIn = false;
+    }
 
     login(data): Observable<any>{
         return this.http.get('https://chs.gnerc.org/authapi/apilogin?email='+data.email+'&password='+data.password, data).pipe(
@@ -25,8 +29,20 @@ export class AuthService {
     checkToken(data): Observable<UserData>{
         return this.http.get<UserFullData>('https://chs.gnerc.org/authapi/checkToken?token='+data).pipe(
             map(receive => {
+                if(receive.user !== null){
+                    this.isloggedIn=true;
+                }
                 return receive.user;
             })
         )
+    }
+
+    isUserLoggedIn(): boolean {
+        return this.isloggedIn;
+    }
+
+    logoutUser(): void{
+        this.isloggedIn = false;
+        localStorage.removeItem('token');
     }
 }

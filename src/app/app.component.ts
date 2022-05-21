@@ -4,6 +4,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { IconSetService } from '@coreui/icons-angular';
 import { cilUser } from '@coreui/icons';
 
+import { AuthService } from './services/auth.service';
+
 @Component({
   // tslint:disable-next-line
   selector: 'body',
@@ -13,7 +15,8 @@ import { cilUser } from '@coreui/icons';
 export class AppComponent implements OnInit {
   constructor(
     private router: Router,
-    public iconSet: IconSetService
+    public iconSet: IconSetService,
+    private authService: AuthService
   ) {
     // iconSet singleton
     iconSet.icons = { cilUser };
